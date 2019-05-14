@@ -34,6 +34,6 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.listMaster = require('./listMaster')(sequelize, Sequelize)
+//db.listMaster = require('./listMaster')(sequelize, Sequelize)
 
 module.exports = db;

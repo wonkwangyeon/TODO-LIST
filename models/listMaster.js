@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         LIST_EXPIRE: {
             type: 'TIMESTAMP',
-            allowNull: false,
+            allowNull: true,
         },
         LIST_PRIORITY: {
             type: 'TIMESTAMP',
