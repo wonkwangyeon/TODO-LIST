@@ -3,13 +3,9 @@ var router = express.Router();
 var listMaster = require('../models').list_master
 var logger = require('../config/logger')
 
-var someFunction = function(req, res, next) {
-    // Put the preprocessing here.
-    logger.info(req.originalUrl)
-    next();
-};
+
 // TODO 조회
-router.get('/', someFunction, async function(req, res) {
+router.get('/', async function(req, res) {
 
     // var list = await listMaster.findAll({
     //     where : {
