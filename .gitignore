@@ -1,2 +1,5 @@
 node_modules/
 logs/
+
+# db 주소 및 비밀번호
+config.json

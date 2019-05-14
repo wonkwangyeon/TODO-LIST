@@ -1,7 +1,9 @@
 var express = require('express');
 var logger = require('./config/logger')
+var sequelize = require('./models/index').sequelize
 var app = express();
- 
+sequelize.sync();
+
 var todoRouter = require('./routes/todo');
 app.use('/api/todo', todoRouter);
 
