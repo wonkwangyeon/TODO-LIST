@@ -1,0 +1,33 @@
+<template>
+  <div>
+
+    <form class="form-horizontal">
+      <div class="form-group form-group-lg">
+        <label class="col-sm-2 control-label" for="formGroupInputLarge">Large label</label>
+        <div class="col-sm-10">
+          <input class="form-control" type="text" id="formGroupInputLarge" placeholder="Large input">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-2 control-label" for="formGroupInputSmall">Small label</label>
+        <div class="col-sm-10">
+          <input class="form-control" type="text" id="formGroupInputSmall" placeholder="Small input">
+        </div>
+      </div>
+    </form>
+  </div>
+
+</template>
+
+<script>
+//import HelloWorld from "./components/HelloWorld.vue";
+
+import MainNav from "./MainNav.vue";
+export default {
+  name: "add-list",
+  components: { MainNav }
+};
+</script>
+
+<style>
+</style>
