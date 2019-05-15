@@ -21,7 +21,7 @@ export default {
       const { data, status } = await this.$axios.get(
         "http://localhost:3000/api/todo"
       );
-      console.log(data);
+    
       data.forEach(element => {
         this.list.push({
           "Todo 제목": element.LIST_TITLE,
@@ -31,7 +31,7 @@ export default {
         });
         this.keys.push(Number(element.LIST_ID));
       });
-      console.log(this.list);
+   
     } catch (e) {
       console.error(e);
     }

@@ -2,8 +2,8 @@
   <div id="app">
 
     <MainNav />
-    <router-link to="/">home</router-link>
-    <router-link to="/add">add</router-link>
+    <router-link to="/" >Home</router-link>
+    <router-link to="/add">Todo추가</router-link>
     <router-view />
 
   </div>
@@ -15,7 +15,7 @@
 import MainNav from "./components/MainNav.vue";
 export default {
   name: "app",
-  components: {MainNav }
+  components: { MainNav }
 };
 </script>
 
