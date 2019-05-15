@@ -2,7 +2,7 @@
   <div>
     <div class="mainbody-size">
       <div>
-        <h2 class=expire-divide>만료된 List</h2>
+        <h2 class=expire-divide>마감된 List</h2>
       </div>
       <div>
         <h2 class=expire-divide>현재 List</h2>
@@ -11,6 +11,7 @@
       <div>
         <h2 class=expire-divide>완료된 List</h2>
       </div>
+      <CompleteList/>
     </div>
   </div>
 </template>
@@ -18,10 +19,11 @@
 <script>
 //import HelloWorld from "./components/HelloWorld.vue";
 import MainList from "./MainList.vue";
+import CompleteList from "./CompleteList.vue"
 
 export default {
   name: "app",
-  components: { MainList }
+  components: { MainList, CompleteList }
 };
 </script>
 

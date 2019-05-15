@@ -2,8 +2,12 @@
   <div id="app">
 
     <MainNav />
-    <router-link to="/" >Home</router-link>
-    <router-link to="/add">Todo추가</router-link>
+    <!-- <div class="router-size">-->
+    <!-- <router-link to="/" class="router-size">Home</router-link> -->
+    <!-- <b-button class="nav-btn" @click="$router.push('/')">Home</b-button> -->
+    <!-- <router-link to="/add"   class="router-size">Todo추가</router-link> -->
+    <!-- <b-button class="nav-btn" @click="$router.push('/add')">Add</b-button>
+    </div> -->
     <router-view />
 
   </div>
@@ -28,5 +32,10 @@ export default {
   color: #2c3e50;
   /* margin-top: 60px; */
 }
-
+.router-size{
+   margin: 0 20px;
+}
+.nav-btn {
+  margin: 0 10px;
+}
 </style>

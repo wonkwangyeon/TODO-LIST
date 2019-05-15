@@ -20,29 +20,44 @@
 </template>
 
 <script>
-
 export default {
   name: "add-list",
   data() {
     return {
       form: {
         list_title: "",
-        list_expire: "",
+        list_expire: null,
         list_content: ""
       }
     };
   },
   methods: {
     async onSubmit(evt) {
-      evt.preventDefault()
+      evt.preventDefault();
       try {
         const { data, status } = await this.$axios.post(
-        "http://localhost:3000/api/todo", this.form
+          "http://localhost:3000/api/todo",
+          this.form
         );
         console.log(data);
+        var add = {
+          LIST_ID: data.msg.list_id,
+          LIST_TITLE: this.form.list_title,
+          LIST_EXPIRE: this.form.list_expire,
+          LIST_CONTENT: this.form.list_content,
+          LIST_CREATED_TIME: data.msg.list_created_time
+        };
+        this.$emit("addList", add);
+        this.form.list_title = "",
+        this.form.list_expire = null,
+        this.form.list_content = "";
       } catch (e) {
         console.error(e);
       }
+    },
+    keyupEvent(e) {
+      var val = e.target.value;
+      var val2 = "tes";
     }
   }
 };
