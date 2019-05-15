@@ -10,7 +10,7 @@
         </p>
       </hgroup>
     </div>
-
+    <MainList />
     <!-- <img
       alt="Vue logo"
       src="./assets/logo.png"
@@ -21,10 +21,11 @@
 
 <script>
 //import HelloWorld from "./components/HelloWorld.vue";
+import MainList from "./components/MainList.vue";
 
 export default {
   name: "app",
-  components: {}
+  components: { MainList }
 };
 </script>
 
