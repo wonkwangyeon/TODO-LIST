@@ -17,7 +17,7 @@
           <b-form>
             <div class="label-left">
 
-              <h6>작성일 : {{ row.item.LIST_CREATED_TIME | moment("YYYY-MM-DD" )}}</h6>
+              <h6>작성일 : {{ row.item.LIST_CREATED_TIME | moment("YYYY-MM-DD hh:mm:ss" )}}</h6>
 
               <b-form-group id="input-group-1" label="Todo 제목:" label-for="input-1">
                 <b-form-input id="input-1" v-model="row.item.LIST_TITLE" required placeholder="Enter Title"></b-form-input>
