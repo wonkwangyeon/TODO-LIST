@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-table :items="list" :fields="fields" striped>
+    <b-table :items="getMainList" :fields="fields" striped>
       <template slot="상세보기" slot-scope="row">
         <b-button size="sm" @click="row.toggleDetails" class="mr-2">
           {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
@@ -13,23 +13,40 @@
       </template>
 
       <template slot="row-details" slot-scope="row">
-        <b-card class="test">
-          <b-row class="mb-2">
+        <b-card class="list-body">
+          <!-- <b-row class="mb-2">
             <b-col sm="3" class="text-sm-right"><b>Memo:</b></b-col>
-            <b-col>{{ row.item.content }}</b-col>
+            <b-col>{{ row.item.LIST_CONTENT }}</b-col>
           </b-row>
           <b-row class="mb-2">
             <b-col sm="3" class="text-sm-right"><b>작성일:</b></b-col>
-            <b-col>{{ row.item.created_time }}</b-col>
-          </b-row>
+            <b-col>{{ row.item.LIST_CREATED_TIME}}</b-col>
+          </b-row> -->
+          <b-form>
+            <div class="label-left">
+              
+               <h6>작성일 : {{ row.item.LIST_CREATED_TIME | moment("YYYY-MM-DD" )}}</h6>
+             
+              <b-form-group id="input-group-1" label="Todo 제목:" label-for="input-1">
+                <b-form-input id="input-1" v-model="row.item.LIST_TITLE" required placeholder="Enter Title"></b-form-input>
+              </b-form-group>
+              <b-form-group id="input-group-2" label="Todo 마감기한(선택사항):" label-for="input-2">
+                <b-form-input id="input-2" v-model="row.item.LIST_EXPIRE" type="date"></b-form-input>
+              </b-form-group>
+              <b-form-group id="input-group-3" label="Todo 메모:" label-for="input-3">
+                <b-form-textarea id="textarea" v-model="row.item.LIST_CONTENT" placeholder="Enter memo..." rows="3" max-rows="6"></b-form-textarea>
+              </b-form-group>
+            </div>
+          </b-form>
+          <b-button size="sm" class="list-btn" @click="todoModify(row)">수정</b-button>
+          <b-button size="sm" class="list-btn" @click="todoDelete(row)">삭제</b-button>
+          <b-button size="sm" class="list-btn" @click="todoComplete(row)">완료처리</b-button>
 
-          <b-button size="sm" @click="todoModify(row.item.list_id)">수정</b-button>
-          <b-button size="sm" @click="todoDelete(row)">삭제</b-button>
         </b-card>
       </template>
     </b-table>
-    <b-button pill variant="info" @click="visibleAbled()" v-show="btnVisible" class="btn_visible_size">+</b-button>
-    <b-button pill variant="info" @click="visibleDisabled()" v-show="visible" class="btn_visible_size">―</b-button>
+    <b-button pill variant="info" @click="visibleAbled()" v-show="btnVisible" class="btn-visible-size">+</b-button>
+    <b-button pill variant="info" @click="visibleDisabled()" v-show="visible" class="btn-visible-size">―</b-button>
     <div v-show="visible">
       <AddList v-on:addList="addList"></AddList>
     </div>
@@ -45,11 +62,19 @@ export default {
   components: { AddList },
   data() {
     return {
-      fields: ["Todo 제목", "마감기한", "상세보기"],
-      list: [],
+      fields: [
+        { key: "LIST_TITLE", label: "Todo 제목" },
+        { key: "LIST_EXPIRE", label: "마감기한" },
+        "상세보기"
+      ],
       visible: false,
       btnVisible: true
     };
+  },
+  computed: {
+    getMainList() {
+      return this.$store.getters.getMainList;
+    }
   },
   methods: {
     async todoDelete(row) {
@@ -57,9 +82,9 @@ export default {
       try {
         const { data, status } = await this.$axios.delete(
           "http://localhost:3000/api/todo",
-          { params: { list_id: row.item.list_id } }
+          { params: { LIST_ID: row.item.LIST_ID } }
         );
-        this.list.splice(row.index, 1);
+        this.$store.commit("deleteMainList", row.index);
         // todoDelete(row, Name) //Name => Search Value
         //Value search and delete
         // this.list = this.list.filter((element) => {
@@ -69,9 +94,42 @@ export default {
         console.error(e);
       }
     },
-    todoModify(list_id) {
+    async todoModify(row) {
+      try {
+        if (
+          row.item.LIST_EXPIRE != "" &&
+          row.item.LIST_EXPIRE != null &&
+          row.item.LIST_EXPIRE < moment(new Date()).format("YYYY-MM-DD")
+        ) {
+          alert("ㄴㄴ");
+        } else {
+          const { data, status } = await this.$axios.put(
+            "http://localhost:3000/api/todo",
+            {
+              LIST_ID: row.item.LIST_ID,
+              LIST_TITLE: row.item.LIST_TITLE,
+              LIST_CONTENT: row.item.LIST_CONTENT,
+              LIST_EXPIRE: row.item.LIST_EXPIRE
+            }
+          );
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async todoComplete(row) {
       // evt.preventDefault();
-      this.$router.push({ name: "AddList", params: { userId: 123 } });
+      try {
+        const { data, status } = await this.$axios.put(
+          "http://localhost:3000/api/todo/complete",
+          { LIST_ID: row.item.LIST_ID, LIST_COMPLETE: 1 }
+        );
+        //this.list.splice(row.index, 1);
+        this.$store.commit("deleteMainList", row.index);
+        this.$store.commit("addCompleteList", row.item);
+      } catch (e) {
+        console.error(e);
+      }
     },
     visibleAbled(e) {
       this.visible = true;
@@ -83,28 +141,9 @@ export default {
     },
     addList(val) {
       if (val.LIST_EXPIRE === null || val.LIST_EXPIRE === "") {
-        this.list.push({
-          list_id: val.LIST_ID,
-          "Todo 제목": val.LIST_TITLE,
-          content: val.LIST_CONTENT,
-          마감기한: "없음",
-          created_time: moment(val.LIST_CREATED_TIME).format(
-            "YYYY년 MM월 DD일 hh:mm:ss"
-          ),
-          priority: val.LIST_PRIORITY
-        });
-      } else {
-        this.list.push({
-          list_id: val.LIST_ID,
-          "Todo 제목": val.LIST_TITLE,
-          content: val.LIST_CONTENT,
-          마감기한: val.LIST_EXPIRE,
-          created_time: moment(val.LIST_CREATED_TIME).format(
-            "YYYY년 MM월 DD일 hh:mm:ss"
-          ),
-          priority: val.LIST_PRIORITY
-        });
+        val.LIST_EXPIRE = "";
       }
+      this.$store.commit("addMainList", val);
     }
   },
   async mounted() {
@@ -115,31 +154,25 @@ export default {
 
       data.forEach(element => {
         if (
-          moment(element.LIST_EXPIRE).format("YYYY년 MM월 DD일") ===
-          "Invalid date"
+          moment(element.LIST_EXPIRE).format("YYYY-MM-DD") === "Invalid date"
         ) {
-          this.list.push({
-            list_id: element.LIST_ID,
-            "Todo 제목": element.LIST_TITLE,
-            content: element.LIST_CONTENT,
-            마감기한: "없음",
-            created_time: moment(element.LIST_CREATED_TIME).format(
-              "YYYY년 MM월 DD일 hh:mm:ss"
-            ),
-            priority: element.LIST_PRIORITY
-          });
+          element.LIST_EXPIRE = "";
         } else {
-          this.list.push({
-            list_id: element.LIST_ID,
-            "Todo 제목": element.LIST_TITLE,
-            content: element.LIST_CONTENT,
-            마감기한: moment(element.LIST_EXPIRE).format("YYYY년 MM월 DD일"),
-            created_time: moment(element.LIST_CREATED_TIME).format(
-              "YYYY년 MM월 DD일 hh:mm:ss"
-            ),
-            priority: element.LIST_PRIORITY
-          });
+          element.LIST_EXPIRE = moment(element.LIST_EXPIRE).format(
+            "YYYY-MM-DD"
+          );
         }
+        this.$store.commit("addMainList", element);
+        // this.list.push({
+        //   LIST_ID: element.LIST_ID,
+        //   LIST_TITLE: element.LIST_TITLE,
+        //   LIST_CONTENT: element.LIST_CONTENT,
+        //   LIST_EXPIRE: element.LIST_EXPIRE,
+        //   LIST_CREATED_TIME: moment(element.LIST_CREATED_TIME).format(
+        //     "YYYY-MM-DD hh:mm:ss"
+        //   ),
+        //   LIST_PRIORITY: element.LIST_PRIORITY
+        // });
       });
     } catch (e) {
       console.error(e);
@@ -149,11 +182,14 @@ export default {
 </script>
 
 <style>
-.test {
+.list-body {
   max-width: 400px;
   margin: auto;
 }
-.btn_visible_size {
+.btn-visible-size {
   width: 50px;
+}
+.list-btn {
+  margin: 0 10px;
 }
 </style>
