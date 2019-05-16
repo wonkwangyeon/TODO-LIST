@@ -69,7 +69,7 @@ export default {
       try {
         const { data, status } = await this.$axios.delete(
           "http://localhost:3000/api/todo",
-          { params: { list_id: row.item.list_id } }
+          { params: { LIST_ID: row.item.LIST_ID } }
         );
 
         this.$store.commit("deleteCompleteList", row.index);

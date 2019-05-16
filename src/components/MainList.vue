@@ -24,9 +24,9 @@
           </b-row> -->
           <b-form>
             <div class="label-left">
-              
-               <h6>작성일 : {{ row.item.LIST_CREATED_TIME | moment("YYYY-MM-DD" )}}</h6>
-             
+
+              <h6>작성일 : {{ row.item.LIST_CREATED_TIME | moment("YYYY-MM-DD" )}}</h6>
+
               <b-form-group id="input-group-1" label="Todo 제목:" label-for="input-1">
                 <b-form-input id="input-1" v-model="row.item.LIST_TITLE" required placeholder="Enter Title"></b-form-input>
               </b-form-group>
@@ -101,7 +101,7 @@ export default {
           row.item.LIST_EXPIRE != null &&
           row.item.LIST_EXPIRE < moment(new Date()).format("YYYY-MM-DD")
         ) {
-          alert("ㄴㄴ");
+          alert("현재 날짜 보다 지난 날짜를 지정할 수 없습니다.");
         } else {
           const { data, status } = await this.$axios.put(
             "http://localhost:3000/api/todo",
@@ -151,7 +151,6 @@ export default {
       const { data, status } = await this.$axios.get(
         "http://localhost:3000/api/todo"
       );
-
       data.forEach(element => {
         if (
           moment(element.LIST_EXPIRE).format("YYYY-MM-DD") === "Invalid date"
@@ -163,19 +162,9 @@ export default {
           );
         }
         this.$store.commit("addMainList", element);
-        // this.list.push({
-        //   LIST_ID: element.LIST_ID,
-        //   LIST_TITLE: element.LIST_TITLE,
-        //   LIST_CONTENT: element.LIST_CONTENT,
-        //   LIST_EXPIRE: element.LIST_EXPIRE,
-        //   LIST_CREATED_TIME: moment(element.LIST_CREATED_TIME).format(
-        //     "YYYY-MM-DD hh:mm:ss"
-        //   ),
-        //   LIST_PRIORITY: element.LIST_PRIORITY
-        // });
       });
     } catch (e) {
-      console.error(e);
+       console.log(e.response)
     }
   }
 };

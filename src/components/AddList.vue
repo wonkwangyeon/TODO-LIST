@@ -40,10 +40,10 @@ export default {
       try {
         if (
           this.form.LIST_EXPIRE != "" &&
-         this.form.LIST_EXPIRE != null &&
+          this.form.LIST_EXPIRE != null &&
           this.form.LIST_EXPIRE < moment(new Date()).format("YYYY-MM-DD")
         ) {
-          alert("ㄴㄴ");
+          alert("현재 날짜 보다 지난 날짜를 지정할 수 없습니다.");
         } else {
           const { data, status } = await this.$axios.post(
             "http://localhost:3000/api/todo",
@@ -51,11 +51,11 @@ export default {
           );
           console.log(data);
           var add = {
-            LIST_ID: data.msg.list_id,
+            LIST_ID: data.list_id,
             LIST_TITLE: this.form.LIST_TITLE,
             LIST_EXPIRE: this.form.LIST_EXPIRE,
             LIST_CONTENT: this.form.LIST_CONTENT,
-            LIST_CREATED_TIME: data.msg.LIST_CREATED_TIME
+            LIST_CREATED_TIME: data.list_created_time
           };
           this.$emit("addList", add);
           (this.form.LIST_TITLE = ""),
