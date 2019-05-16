@@ -61,6 +61,7 @@ export default {
           (this.form.LIST_TITLE = ""),
             (this.form.LIST_EXPIRE = null),
             (this.form.LIST_CONTENT = "");
+             console.log("추가하였습니다.")
         }
       } catch (e) {
         console.error(e);

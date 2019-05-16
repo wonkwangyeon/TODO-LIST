@@ -60,6 +60,7 @@ export default {
         //this.list.splice(row.index, 1);
         this.$store.commit("deleteCompleteList", row.index);
         this.$store.commit("addMainList", row.item);
+         console.log("완료취소 하였습니다.")
       } catch (e) {
         console.error(e);
       }
@@ -73,6 +74,7 @@ export default {
         );
 
         this.$store.commit("deleteCompleteList", row.index);
+         console.log("삭제하였습니다.")
       } catch (e) {
         console.error(e);
       }

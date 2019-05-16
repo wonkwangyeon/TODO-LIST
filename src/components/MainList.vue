@@ -93,6 +93,7 @@ export default {
       } catch (e) {
         console.error(e);
       }
+       console.log("삭제하였습니다.")
     },
     async todoModify(row) {
       try {
@@ -113,6 +114,7 @@ export default {
             }
           );
         }
+         console.log("수정하였습니다.")
       } catch (e) {
         console.error(e);
       }
@@ -130,6 +132,7 @@ export default {
       } catch (e) {
         console.error(e);
       }
+       console.log("완료하였습니다.")
     },
     visibleAbled(e) {
       this.visible = true;

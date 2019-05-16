@@ -64,6 +64,7 @@ export default {
           { params: { list_id: row.item.list_id } }
         );
         this.list.splice(row.index, 1);
+         console.log("삭제하였습니다..")
       } catch (e) {
         console.error(e);
       }
@@ -87,6 +88,7 @@ export default {
           this.list.splice(row.index, 1);
           this.$store.commit("addMainList", row.item);
         }
+         console.log("수정하였습니다.")
       } catch (e) {
         console.error(e);
       }
@@ -102,6 +104,7 @@ export default {
         // row.item.LIST_TITLE = row.item["Todo 제목"];
         // row.item.LIST_EXPIRE = row.item["마감기한"];
         this.$store.commit("addCompleteList", row.item);
+         console.log("완료하였습니다.")
       } catch (e) {
         console.error(e);
       }
@@ -134,6 +137,7 @@ export default {
           LIST_PRIORITY: element.LIST_PRIORITY
         });
       });
+      
     } catch (e) {
       console.error(e);
     }
