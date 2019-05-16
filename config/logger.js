@@ -26,9 +26,16 @@ const logger = createLogger({
             )
         }),
         new transports.DailyRotateFile({
-            filename: `${logDir}/%DATE%.log`,
+            filename: `${logDir}/%DATE%-info.log`,
             datePattern: "YYYY-MM-DD",
             level: 'info',
+            maxSize: "20m",
+            maxFiles: "14d"
+        }),
+        new transports.DailyRotateFile({
+            filename: `${logDir}/%DATE%-error.log`,
+            datePattern: "YYYY-MM-DD",
+            level: 'error',
             maxSize: "20m",
             maxFiles: "14d"
         })
