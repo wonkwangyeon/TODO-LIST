@@ -2,6 +2,7 @@ const listMaster = require('../models').list_master
 const logger = require('../config/logger')
 const Sequelize = require('sequelize');
 const moment = require('moment');
+const InvalidRequestError = require('../error/InvalidRequestError')
 
 module.exports = {
     getList: async function(req, res) {
@@ -22,8 +23,9 @@ module.exports = {
             })
             return list
         } catch (e) {
-            logger.error('현재 List 조회시 에러발생', e)
-            throw new Error({ message: '현재 List조회시 DB 에러발생' });
+
+            logger.error('현재 List 조회시 에러발생 ' + e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('현재 List 조회시 에러발생 ' + e.parent.sqlMessage)
         }
     },
     setList: async function(req, res) {
@@ -37,8 +39,8 @@ module.exports = {
             })
             return list
         } catch (e) {
-            logger.error('List 추가시 에러발생', e)
-            throw new Error({ message: 'List 추가시 DB 에러발생' });
+            logger.error('List 추가시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('List 추가시 에러발생 ' + e.parent.sqlMessage)
         }
     },
     modifyList: async function(req, res) {
@@ -54,8 +56,8 @@ module.exports = {
                 where: { LIST_ID: req.body.LIST_ID }
             })
         } catch (e) {
-            logger.error('List 수정시 에러발생', e)
-            throw new Error({ message: 'List 수정시 DB 에러발생' });
+            logger.error('List 수정시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('List 수정시 에러발생 ' + e.parent.sqlMessage)
         }
     },
     deleteList: async function(req, res) {
@@ -64,16 +66,16 @@ module.exports = {
                 where: { LIST_ID: req.query.LIST_ID }
             })
         } catch (e) {
-            logger.error('List 삭제시 에러발생', e)
-            throw new Error({ message: 'List 삭제시 DB 에러발생' });
+            logger.error('List 삭제시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('List 삭제시 에러발생 ' + e.parent.sqlMessage)
         }
     },
     setPriority: async function(req, res) {
         try {
 
         } catch (e) {
-            logger.error('List 조회시 에러발생', e)
-            throw new Error({ message: 'List 조회시 DB 에러발생' });
+            logger.error('List 조회시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('List 추가시 에러발생 ' + e.parent.sqlMessage)
         }
     },
     getExpireList: async function(req, res) {
@@ -90,8 +92,8 @@ module.exports = {
             })
             return list
         } catch (e) {
-            logger.error('마감이 지난 List 조회시 에러발생', e)
-            throw new Error({ message: '마감이 지난 List 조회시 DB 에러발생' });
+            logger.error('마감이 지난 List 조회시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('마감이 지난 List 조회시 에러발생 ' + e.parent.sqlMessage)
         }
     },
 
@@ -105,8 +107,8 @@ module.exports = {
             })
             return list
         } catch (e) {
-            logger.error('완료된 List 조회시 에러발생', e)
-            throw new Error({ message: '완료된 List 조회시 DB 에러발생' });
+            logger.error('완료된 List 조회시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('완료된 List 조회시 에러발생 ' + e.parent.sqlMessage)
         }
     },
     setComplete: async function(req, res) {
@@ -117,8 +119,8 @@ module.exports = {
                 where: { LIST_ID: req.body.LIST_ID }
             })
         } catch (e) {
-            logger.error('List 완료처리시 에러발생', e)
-            throw new Error({ message: 'List 완료처리시 DB 에러발생' });
+            logger.error('List 완료처리시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('List 완료처리시 에러발생 ' + e.parent.sqlMessage)
         }
     },
 }

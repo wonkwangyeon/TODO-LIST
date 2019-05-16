@@ -2,18 +2,15 @@ const express = require('express');
 const router = express.Router();
 const logger = require('../config/logger')
 const todoService = require('../service/todoService')
-const InvalidRequestEroor = require('../error/InvalidRequestError')
-const errorMsg = {
-    message: "서버에러",
-}
+
 
 // TODO 조회
 router.get('/', async function(req, res) {
     try {
-        // let list = await todoService.getList()
-        return res.status(200).json(InvalidRequestEroor('sss'))
+        let list = await todoService.getList()
+        return res.status(200).json(list)
     } catch (e) {
-        return res.status(500).json(errorMsg)
+        return res.status(500).json(e)
     }
 });
 
@@ -22,14 +19,14 @@ router.post('/', async function(req, res) {
     try {
         let list = await todoService.setList(req)
 
-        var msg = {
+        let msg = {
             message: "작성하였습니다",
             list_id: list.LIST_ID,
             list_created_time: list.LIST_CREATED_TIME
         }
         return res.status(200).json(msg)
     } catch (e) {
-        return res.status(500).json(errorMsg)
+        return res.status(500).json(e)
     }
 
 });
@@ -40,12 +37,12 @@ router.put('/', async function(req, res) {
     try {
         let list = await todoService.modifyList(req)
 
-        var msg = {
+        let msg = {
             message: "수정하였습니다",
         }
         return res.status(200).json(msg)
     } catch (e) {
-        return res.status(500).json(errorMsg)
+        return res.status(500).json(e)
     }
 
 });
@@ -60,7 +57,7 @@ router.delete('/', async function(req, res) {
         }
         return res.status(200).json(msg)
     } catch (e) {
-        return res.status(500).json(errorMsg)
+        return res.status(500).json(e)
     }
 });
 
@@ -81,7 +78,7 @@ router.get('/expire', async function(req, res) {
         let list = await todoService.getExpireList()
         return res.status(200).json(list)
     } catch (e) {
-        return res.status(500).json(errorMsg)
+        return res.status(500).json(e)
     }
 });
 
@@ -91,7 +88,7 @@ router.get('/complete', async function(req, res) {
         let list = await todoService.getCompleteList()
         return res.status(200).json(list)
     } catch (e) {
-        return res.status(500).json(errorMsg)
+        return res.status(500).json(e)
     }
 });
 
@@ -107,7 +104,7 @@ router.put('/complete', async function(req, res) {
         }
         return res.status(200).json(msg)
     } catch (e) {
-        return res.status(500).json(errorMsg)
+        return res.status(500).json(e)
     }
 });
 module.exports = router;
