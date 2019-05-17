@@ -11,7 +11,6 @@ app.use(cors({
     credentials: true
 }))
 
-//app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 app.use(morgan('common', { stream: logger.stream }));
 

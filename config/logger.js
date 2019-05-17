@@ -8,6 +8,7 @@ if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir);
 }
 
+process.env.NODE_ENV // "development"
 const logger = createLogger({
     format: format.combine(
         format.timestamp({
@@ -16,15 +17,6 @@ const logger = createLogger({
         format.json()
     ),
     transports: [
-        new transports.Console({
-            level: "debug",
-            format: format.combine(
-                format.colorize(),
-                format.printf(
-                    info => `${info.timestamp} ${info.level}: ${info.message}`
-                )
-            )
-        }),
         new transports.DailyRotateFile({
             filename: `${logDir}/%DATE%-info.log`,
             datePattern: "YYYY-MM-DD",
@@ -47,5 +39,19 @@ logger.stream = {
         logger.info(message);
     },
 };
+
+
+if (process.env.NODE_ENV !== "production") {
+    logger.add(new transports.Console({
+        level: "debug",
+        format: format.combine(
+            format.colorize(),
+            format.printf(
+                info => `${info.timestamp} ${info.level}: ${info.message}`
+            )
+        )
+    }))
+}
+
 
 module.exports = logger;
