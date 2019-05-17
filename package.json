@@ -15,6 +15,7 @@
         "vue": "^2.6.10",
         "vue-moment": "^4.0.0",
         "vue-router": "^3.0.6",
+        "vuedraggable": "^2.20.0",
         "vuex": "^3.1.1"
     },
     "devDependencies": {
@@ -25,20 +26,6 @@
         "eslint": "^5.16.0",
         "eslint-plugin-vue": "^5.0.0",
         "vue-template-compiler": "^2.5.21"
-    },
-    "eslintConfig": {
-        "root": true,
-        "env": {
-            "node": true
-        },
-        "extends": [
-            "plugin:vue/essential",
-            "eslint:recommended"
-        ],
-        "rules": {},
-        "parserOptions": {
-            "parser": "babel-eslint"
-        }
     },
     "postcss": {
         "plugins": {

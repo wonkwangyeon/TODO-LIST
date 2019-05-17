@@ -1,31 +1,28 @@
 <template>
-  <div>
+  <div class="home">
     <div class="mainbody-size">
-      <div>
-        <h2 class=expire-divide>마감이 지난 List</h2>
+      <h2 class=expire-divide>현재 List</h2>
+      <div class="list-container">
+        <todo-list />
       </div>
-      <ExpireList />
-      <div>
-        <h2 class=expire-divide>현재 List</h2>
-      </div>
-      <MainList />
-      <div>
-        <h2 class=expire-divide>완료된 List</h2>
-      </div>
-      <CompleteList />
     </div>
   </div>
 </template>
 
 <script>
-//import HelloWorld from "./components/HelloWorld.vue";
-import MainList from "./MainList.vue";
-import CompleteList from "./CompleteList.vue";
-import ExpireList from "./ExpireList.vue";
-
+import TodoList from "./TodoList";
 export default {
   name: "app",
-  components: { MainList, CompleteList, ExpireList }
+  components: { TodoList },
+  async mounted() {
+    try {
+      this.$store.dispatch('getAllTodoList')
+    } catch(e) {
+      // 요청 실패
+      console.error(e.response.message)
+      //TODO: Modal
+    }
+  }
 };
 </script>
 
