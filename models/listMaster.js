@@ -1,3 +1,14 @@
+/**
+ * DB Schema 모델
+ * id - Integer, key, not null
+ * title - String 최대 50자 이하, null
+ * content - String, null
+ * complete - Integer default=0, not null
+ * created_time - Date, not null, defalut = current_timestamp
+ * expire - Date(YYYY-MM-DD), null
+ * priority Integer, null
+ */
+
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('list_master', {
         id: {

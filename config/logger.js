@@ -4,6 +4,11 @@ require("winston-daily-rotate-file")
 const fs = require('fs')
 const logDir = 'logs'
 
+/**
+ * 로그 기본 세팅
+ * develop일경우 txt파일로 남기고 console에도 찍는다.
+ * production일 경우 txt파일로만 남기고 console엔 찍지않는다
+ */
 if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir);
 }

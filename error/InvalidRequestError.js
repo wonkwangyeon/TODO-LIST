@@ -1,3 +1,9 @@
+/**
+ * 500에러를 처리하는 함수, name, code, message를 설정한다
+ * @param {message} String 안내해줄 메세지를 받음
+ * 
+ */
+
 function InvalidRequestError(message) {
     this.name = "InvalidRequestError";
     this.code = 500;
