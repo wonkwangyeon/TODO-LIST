@@ -19,7 +19,7 @@ module.exports = {
     //         let list = await listMaster.findAll({
     //             attributes: ['id', 'title', 'content', 'created_time', 'expire', 'priority'],
     //             where: {
-    //                 LIST_COMPLETE: 0,
+    //                 complete: 0,
     //                 [Op.or]: [{
     //                         expire: {
     //                             [Op.gte]: moment().format("YYYY-MM-DD")
@@ -113,7 +113,7 @@ module.exports = {
     //         let list = await listMaster.findAll({
     //             attributes: ['id', 'title', 'content', 'created_time', 'expire', 'priority'],
     //             where: {
-    //                 LIST_COMPLETE: 0,
+    //                 complete: 0,
     //                 expire: {
     //                     [Op.lt]: moment().format("YYYY-MM-DD")
     //                 }
@@ -131,7 +131,7 @@ module.exports = {
     //         let list = await listMaster.findAll({
     //             attributes: ['id', 'title', 'content', 'created_time', 'expire', 'priority'],
     //             where: {
-    //                 LIST_COMPLETE: 1
+    //                 complete: 1
     //             }
     //         })
     //         return list
@@ -143,7 +143,7 @@ module.exports = {
     // setComplete: async function(req, res) {
     //     try {
     //         let list = await listMaster.update({
-    //             LIST_COMPLETE: req.body.LIST_COMPLETE
+    //             complete: req.body.complete
     //         }, {
     //             where: { id: req.body.id }
     //         })

@@ -94,7 +94,7 @@ router.delete('/', async function(req, res) {
 //     try {
 //         await todoService.setComplete(req)
 //         let msg = {}
-//         if (Number(req.body.LIST_COMPLETE) === 1) {
+//         if (Number(req.body.complete) === 1) {
 //             msg.meesage = "완료하였습니다."
 //         } else {
 //             msg.meesage = "완료취소하였습니다."

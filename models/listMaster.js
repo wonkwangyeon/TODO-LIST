@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: true,
         },
-        LIST_COMPLETE: {
+        complete: {
             type: DataTypes.INTEGER,
             defaultValue: sequelize.literal('0'),
             allowNull: false,
