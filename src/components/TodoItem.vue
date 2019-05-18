@@ -50,15 +50,18 @@ export default {
       }
     },
     calculateExpireDateDiff() {
-      const now = this.$moment();
+      const now = this.$moment().format('YYYY-MM-DD');
       const parsedDate = this.$moment(this.item.expire);
-      return parsedDate.diff(now, "days") + 1;
+      return parsedDate.diff(now, "days");
     },
     getDateDiffAsString() {
       const diff = this.calculateExpireDateDiff();
       if (diff < 0) {
         return "기간지남";
-      } else if (diff < 7) {
+      } else if (diff === 0) {
+        return "오늘까지"
+      }
+      else if(diff < 7) {
         return `${diff}일 남음`;
       } else {
         return `~ ${this.item.expire}`;
@@ -74,8 +77,11 @@ export default {
         // 시각화 시킬것
         return "primary";
       }
+      if (dateDiff >= 1) {
+        return "warning";
+      }
       if (dateDiff === 0) {
-        return "info";
+        return "dark";
       }
       if (dateDiff < 0) {
         return "danger";
