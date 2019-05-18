@@ -10,9 +10,13 @@
     <div class="item_title" :class="{ completed_todo_item: item.complete }">
       <p class="mb-0" v-text="item.title" />
     </div>
-    <div class="expire_date">
-      {{ item.expire }}
-    </div>
+    <template v-if="item.expire !== null && item.expire.length > 0">
+      <div class="expire_date">
+        <b-badge :variant="getVariant()">
+          {{ getDateDiffAsString() }}
+        </b-badge>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -44,6 +48,39 @@ export default {
           variant: "danger"
         });
       }
+    },
+    calculateExpireDateDiff() {
+      const now = this.$moment();
+      const parsedDate = this.$moment(this.item.expire);
+      // return now.diff(parsedDate,'days');
+      return parsedDate.diff(now, "days") + 1;
+    },
+    getDateDiffAsString() {
+      const diff = this.calculateExpireDateDiff();
+      if (diff < 0) {
+        return "기간지남";
+      } else if (diff < 7) {
+        return `${diff}일 남음`;
+      } else {
+        return `~ ${this.item.expire}`;
+      }
+    },
+    getVariant() {
+      const dateDiff = this.calculateExpireDateDiff();
+      if (dateDiff > 6) {
+        // 시간 여유 있음
+        return "light";
+      }
+      if (dateDiff > 3) {
+        // 시각화 시킬것
+        return "primary";
+      }
+      if (dateDiff === 0) {
+        return "info";
+      }
+      if (dateDiff < 0) {
+        return "danger";
+      }
     }
   }
 };
@@ -60,7 +97,7 @@ export default {
 }
 .item_title {
   display: inline-block;
-  max-width: 80%;
+  max-width: 70%;
 }
 .item_title > p {
   overflow: hidden;
