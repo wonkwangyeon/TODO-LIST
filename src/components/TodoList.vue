@@ -1,6 +1,7 @@
 <template>
   <b-container>
     <b-row>
+      <!-- 2 : 1 비율로 좌측에는 할일, 오른쪽에는 클릭한 할일에 대한 상세 내용을 확인할 수 있다.-->
       <b-col md="8">
         <div class="view_completed_items">
           <b-form-checkbox v-model="view_completed_items">
@@ -8,6 +9,7 @@
           </b-form-checkbox>
         </div>
         <b-list-group>
+          <!-- 완료되지 않은 할일들 상위 노출-->
           <draggable v-model="todoList">
             <b-list-group-item
               class="todo_item"
@@ -18,6 +20,9 @@
               <todo-item :item="element" />
             </b-list-group-item>
           </draggable>
+          <!--/완료되지 않은 할일들 상위 노출-->
+
+          <!-- 완료된 일들은 체크박스 선택 시 노출-->
           <template v-if="view_completed_items">
             <b-list-group-item
               class="todo_item"
@@ -28,14 +33,22 @@
               <todo-item :item="element" />
             </b-list-group-item>
           </template>
+          <!--/완료된 일들은 체크박스 선택 시 노출-->
+
+          <!--할일 추가 폼-->
           <add-todo />
+          <!--/할일 추가 폼-->
         </b-list-group>
       </b-col>
       <b-col md="4">
+
+        <!--특정 To do를 클릭하였을 때, 상세한 내역이 보이는 영역-->
         <current-todo
           v-if="Object.keys($store.getters.getCurrentTodo).length !== 0"
           :current-todo="currentTodo"
         />
+        <!--/특정 To do를 클릭하였을 때, 상세한 내역이 보이는 영역-->
+
       </b-col>
     </b-row>
   </b-container>
@@ -69,18 +82,19 @@ export default {
             else return 0;
           });
       },
+      // 순서 조정시 서버에 요청을 한 뒤 Vuex에 반영함
       set: async function(value) {
         try {
+          // 할일 순서를 base로 하여 현재 보이는 순서(array index)대로 우선순위를 재설정함
           value = value.map(function(element, index) {
             element.priority = index + 1;
             return element;
           });
+
           await this.$store.dispatch(
             "modifyPriority",
-            value.concat(this.completedTodoList)
+            value.concat(this.completedTodoList) // 서버에 우선순위가 재설정된 To do 목록을 전송할 때에는 완료된 값까지 모두 포함하여 전송
           );
-          //서버로 부터 값을 갱신받음
-          // await this.$store.dispatch('getAllTodoList')
         } catch (e) {
           this.$bvToast.toast(
             "요청중 오류가 발생하여 우선순위를 변경할 수 없습니다.",
@@ -95,7 +109,7 @@ export default {
     completedTodoList: {
       get: function() {
         return this.$store.getters.getTodoList.filter(function(todo) {
-          return !!todo.complete;
+          return !!todo.complete; // 서버측으로 부터 true, false가 아닌 1, 0을 수신할 수 있으므로 boolean으로 parse 처리함
         });
       }
     },
@@ -115,14 +129,7 @@ export default {
   },
   data() {
     return {
-      fields: [
-        { key: "title", label: "Todo 제목" },
-        { key: "expire", label: "마감기한" },
-        "상세보기"
-      ],
-      visible: false,
-      btnVisible: true,
-      view_completed_items: false
+      view_completed_items: false // 완료된 할일을 보여줄지 말지 결정하는 flag 변수
     };
   }
 };

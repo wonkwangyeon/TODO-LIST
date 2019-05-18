@@ -10,8 +10,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    todoList: [],
-    currentTodo: {}
+    todoList: [], //할 일 목록
+    currentTodo: {} //할일에 대한 상세한 내용
   },
   getters: {
     getTodoList: function(state) {
@@ -24,9 +24,6 @@ const store = new Vuex.Store({
   mutations: {
     setCurrentTodo: function(state, payload) {
       state.currentTodo = payload;
-    },
-    clearTodoList: function(state) {
-      state.todoList = [];
     },
     addTodoList: function(state, payload) {
       if (Array.isArray(payload)) {
@@ -64,6 +61,7 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    //모든 할 일 목록을 get
     getAllTodoList: async function(context) {
       try {
         context.state.todoList = [];
@@ -75,6 +73,7 @@ const store = new Vuex.Store({
         throw new Error("get To-do reqeust failed");
       }
     },
+    //낱개의 할일을 삭제
     deleteTodo: async function(context, todoId) {
       try {
         const { status } = await request.delete(constants.api.endpoint, {
@@ -88,7 +87,7 @@ const store = new Vuex.Store({
       }
     },
     setTodo: async function(context, toDo) {
-      // todo = Todo 객체
+      // toDo = To do 객체
       try {
         const { status } = await request.post(constants.api.endpoint, toDo);
         if (status === 200) {
@@ -99,7 +98,6 @@ const store = new Vuex.Store({
     }
     },
     modifyTodo: async function(context, toDo) {
-      // 정렬은 배열로 보내고, 일반 수정 및 완료처리는 json객체 하나로 보냄.
       try {
         const { status } = await request.put(constants.api.endpoint, toDo);
         if (status === 200) {
@@ -110,7 +108,7 @@ const store = new Vuex.Store({
       }
     },
     modifyPriority: async function(context, newOrder) {
-      //
+      //우선순위 정렬
       try {
         const { status } = await request.put(constants.api.endpoint, newOrder);
         if (status === 200) {

@@ -1,5 +1,6 @@
 <template>
   <b-container>
+    <!--    To do 에 대해 상세 내용을 볼 수 있는 컴포넌트-->
     <b-row class="current_todo_row">
       <b-col>
         <b-form-input
@@ -10,6 +11,7 @@
         />
       </b-col>
     </b-row>
+
     <b-row class="current_todo_row">
       <b-col sm="4" class="pr-md-0">
         <p class="text-center mb-0 h-100 label">작성일</p>
@@ -18,6 +20,7 @@
         <span>{{ todo_element.created_time | moment("YYYY.MM.DD") }}</span>
       </b-col>
     </b-row>
+
     <b-row class="current_todo_row">
       <b-col sm="4" class="pr-md-0">
         <p class="text-center mb-0 h-100 label">마감일</p>
@@ -34,6 +37,7 @@
         />
       </b-col>
     </b-row>
+
     <b-row>
       <b-col offset-sm="6">
         <div class="control_todo">
@@ -57,7 +61,7 @@ export default {
   },
   data() {
     return {
-      todo_element: JSON.parse(JSON.stringify(this.currentTodo)),
+      todo_element: JSON.parse(JSON.stringify(this.currentTodo)), // 객체 깊은 복사를 위해 2중으로 JSON처리 함.
       test: null
     };
   },

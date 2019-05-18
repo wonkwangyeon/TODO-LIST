@@ -1,11 +1,13 @@
 <template>
   <b-list-group-item @click="activateForm" class="add-todo">
     <font-awesome-icon icon="plus" />
+
     <template v-if="!isEditable">
       <span class="new todo_title">추가하려면 클릭하세요</span>
     </template>
+
     <template v-else>
-      <div style="margin-left: 12px;display: inline-block; width: 440px;">
+      <div class="item_add_form">
         <b-form-input
           ref="inputform"
           size="sm"
@@ -62,11 +64,13 @@ export default {
     },
     add_new_todo: async function(event) {
       if (event.which === 13) {
+        // 엔터키 입력시 저장 또는 작성취소
         if (this.title.length === 0) {
           return (this.isEditable = false);
         }
         await this.request_new_todo();
       } else if (event.type === "blur") {
+        // focus 아웃시 저장 또는 작성취소
         if (this.title.length === 0) {
           return (this.isEditable = false);
         }
@@ -86,10 +90,17 @@ export default {
 <style scoped>
 .add-todo {
   cursor: pointer;
+  position: relative;
+  align-items: center;
+  display: flex;
 }
 .new,
 .todo_title {
   color: #bcbcbc;
   padding-left: 20px;
+}
+.item_add_form {
+  width: 90%;
+  display: inline-block;
 }
 </style>
