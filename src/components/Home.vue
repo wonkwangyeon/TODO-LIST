@@ -24,7 +24,6 @@ export default {
         variant: 'danger',
         solid: true
       })
-      //TODO: Modal
     }
   }
 };

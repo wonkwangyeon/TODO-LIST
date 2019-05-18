@@ -10,27 +10,25 @@
               v-for="element in todoList"
               :key="element.id"
             >
-              <div class="check_box">
-                <b-form-checkbox
-                  v-model="element.complete"
-                  name="`chkbox-${element.id}`"
-                />
-              </div>
-              <div class="todo_title">
-                <p v-text="element.title" />
-              </div>
-              <div class="expire_date">
-                <!--            <b-badge v-if="typeof element.expire !== 'null' && element.expire.length > 0" variant="info">-->
-                <!--              {{ element.expire | moment("YYYY.MM.DD") }}-->
-                <!--            </b-badge>-->
-              </div>
+              <todo-item :item="element" />
             </b-list-group-item>
           </draggable>
           <add-todo />
+          <b-list-group-item
+            @click="setCurrentTodo(element)"
+            class="todo_item"
+            v-for="element in completedTodoList"
+            :key="`complete-${element.id}`"
+          >
+            <todo-item :item="element" />
+          </b-list-group-item>
         </b-list-group>
       </b-col>
       <b-col md="4">
-        <current-todo :current-todo="currentTodo"/>
+        <current-todo
+          v-if="Object.keys($store.getters.getCurrentTodo).length !== 0"
+          :current-todo="currentTodo"
+        />
       </b-col>
     </b-row>
   </b-container>
@@ -40,11 +38,13 @@
 import draggable from "vuedraggable";
 import AddTodo from "./AddTodo";
 import CurrentTodo from "./CurrentTodo";
+import TodoItem from "./TodoItem";
 
 export default {
   name: "TodoList",
   //  components: { AddList },
   components: {
+    TodoItem,
     CurrentTodo,
     AddTodo,
     draggable
@@ -52,11 +52,20 @@ export default {
   computed: {
     todoList: {
       get: function() {
-        return this.$store.getters.getTodoList;
+        return this.$store.getters.getTodoList.filter(function(todo) {
+          return !todo.complete;
+        });
       },
       set: function(value) {
         console.log(value);
         //this.$store.
+      }
+    },
+    completedTodoList: {
+      get: function() {
+        return this.$store.getters.getTodoList.filter(function(todo) {
+          return !!todo.complete;
+        });
       }
     },
     currentTodo: {
@@ -64,7 +73,7 @@ export default {
         return this.$store.getters.getCurrentTodo;
       },
       set: function(value) {
-        this.$store.commit('setCurrentTodo', value)
+        this.$store.commit("setCurrentTodo", value);
       }
     }
   },
@@ -120,6 +129,11 @@ export default {
 .expire_date {
   display: inline-block;
   float: right;
+}
+
+.completed_todo_item {
+  text-decoration: line-through;
+  color: #e2e2e2;
 }
 
 .list-body {
