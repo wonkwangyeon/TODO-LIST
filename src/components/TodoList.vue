@@ -2,6 +2,11 @@
   <b-container>
     <b-row>
       <b-col md="8">
+        <div>
+          <b-form-checkbox v-model="view_completed_items">
+            완료된 할일 보기
+          </b-form-checkbox>
+        </div>
         <b-list-group>
           <draggable v-model="todoList">
             <b-list-group-item
@@ -13,15 +18,17 @@
               <todo-item :item="element" />
             </b-list-group-item>
           </draggable>
+          <template v-if="view_completed_items">
+            <b-list-group-item
+                    @click="setCurrentTodo(element)"
+                    class="todo_item"
+                    v-for="element in completedTodoList"
+                    :key="`complete-${element.id}`"
+            >
+              <todo-item :item="element" />
+            </b-list-group-item>
+          </template>
           <add-todo />
-          <b-list-group-item
-            @click="setCurrentTodo(element)"
-            class="todo_item"
-            v-for="element in completedTodoList"
-            :key="`complete-${element.id}`"
-          >
-            <todo-item :item="element" />
-          </b-list-group-item>
         </b-list-group>
       </b-col>
       <b-col md="4">
@@ -109,7 +116,7 @@ export default {
       ],
       visible: false,
       btnVisible: true,
-      test: []
+      view_completed_items: false
     };
   }
 };
