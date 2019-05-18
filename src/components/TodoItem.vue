@@ -52,7 +52,6 @@ export default {
     calculateExpireDateDiff() {
       const now = this.$moment();
       const parsedDate = this.$moment(this.item.expire);
-      // return now.diff(parsedDate,'days');
       return parsedDate.diff(now, "days") + 1;
     },
     getDateDiffAsString() {
@@ -94,6 +93,10 @@ export default {
 }
 .check_box {
   display: inline-block;
+}
+.completed_todo_item {
+  text-decoration: line-through;
+  color: #e2e2e2;
 }
 .item_title {
   display: inline-block;
