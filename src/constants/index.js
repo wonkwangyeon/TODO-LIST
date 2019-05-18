@@ -1,5 +1,5 @@
 export default {
-    api: {
-        endpoint: "/api/todo"
-    }
-}
+  api: {
+    endpoint: "/api/todo"
+  }
+};
