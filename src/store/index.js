@@ -44,6 +44,7 @@ const store = new Vuex.Store({
             state.todoList = todolist.filter(function(element) {
                 return element.id !== payload
             })
+            state.currentTodo = {}
             return
         },
         modifyTodo: function(state, payload) {
@@ -55,6 +56,7 @@ const store = new Vuex.Store({
                     return element
                 }
             });
+            state.currentTodo = payload;
             return
         }
     },
