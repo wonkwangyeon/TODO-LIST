@@ -38,6 +38,8 @@ export default {
         const copiedItem = JSON.parse(JSON.stringify(this.item));
         copiedItem.complete = isChecked ? 1 : 0;
         await this.$store.dispatch("modifyTodo", copiedItem);
+        if (isChecked) new Audio("http://www.orangefreesounds.com/wp-content/uploads/2014/08/Mario-coin-sound.mp3").play()
+        else new Audio("https://www.redringtones.com/wp-content/uploads/2017/03/mario-mushroom-sound.mp3").play()
         this.$bvToast.toast("완료처리 되었습니다.", {
           title: `요청 성공`,
           variant: "info"
