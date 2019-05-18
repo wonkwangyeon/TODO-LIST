@@ -17,7 +17,7 @@
     <!--/할 일 제목-->
 
     <!--만료일이 설정된 경우 만료일에 대한 정보 안내-->
-    <template v-if="item.expire !== null && item.expire.length > 0">
+    <template v-if="!isNull(item.expire)">
       <div class="expire_date">
         <b-badge :variant="getVariant()">
           {{ getDateDiffAsString() }}
@@ -82,6 +82,20 @@ export default {
         return `${diff}일 남음`;
       } else {
         return `~ ${this.item.expire}`;
+      }
+    },
+    isNull(value) {
+      if (
+        value === "" ||
+        value === null ||
+        value === undefined ||
+        (value !== null &&
+          typeof value == "object" &&
+          !Object.keys(value).length)
+      ) {
+        return true;
+      } else {
+        return false;
       }
     },
     getVariant() {
