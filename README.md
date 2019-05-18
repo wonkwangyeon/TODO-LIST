@@ -1,4 +1,4 @@
-# todolist_frontend
+# 2019 Programmers Summer Internship
 
 ## Project setup
 ```

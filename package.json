@@ -2,7 +2,7 @@
     "name": "todolist_front",
     "version": "0.1.0",
     "description": "Programmers 2019 Summer Internship Assignment",
-    "author": "WonPangYeon",
+    "author": "WonKwangYeon",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve --open --port 9000",
