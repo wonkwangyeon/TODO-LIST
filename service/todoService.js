@@ -1,7 +1,5 @@
 const listMaster = require('../models').list_master
 const logger = require('../config/logger')
-const Sequelize = require('sequelize');
-const moment = require('moment');
 const InvalidRequestError = require('../error/InvalidRequestError')
 
 module.exports = {
@@ -19,15 +17,15 @@ module.exports = {
     //     const Op = Sequelize.Op
     //     try {
     //         let list = await listMaster.findAll({
-    //             attributes: ['LIST_ID', 'LIST_TITLE', 'LIST_CONTENT', 'LIST_CREATED_TIME', 'LIST_EXPIRE', 'LIST_PRIORITY'],
+    //             attributes: ['id', 'title', 'content', 'created_time', 'expire', 'priority'],
     //             where: {
     //                 LIST_COMPLETE: 0,
     //                 [Op.or]: [{
-    //                         LIST_EXPIRE: {
+    //                         expire: {
     //                             [Op.gte]: moment().format("YYYY-MM-DD")
     //                         }
     //                     },
-    //                     { LIST_EXPIRE: null }
+    //                     { expire: null }
     //                 ]
     //             }
     //         })
@@ -40,16 +38,14 @@ module.exports = {
     // },
     setList: async function(req, res) {
         try {
-            if (req.body.LIST_EXPIRE !== null && req.body.LIST_EXPIRE.trim() === "")
-                req.body.LIST_EXPIRE = null;
+            console.log(req.body.priority)
             let list = await listMaster.create({
-                LIST_TITLE: req.body.LIST_TITLE,
-                LIST_CONTENT: req.body.LIST_CONTENT,
-                LIST_EXPIRE: req.body.LIST_EXPIRE,
-                LIST_PRIORITY: req.body.LIST_PRIORITY
+                title: req.body.title,
+                priority: req.body.priority
             })
             return list
         } catch (e) {
+
             logger.debug('List 추가시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
             throw new InvalidRequestError('List 추가시 에러발생 ' + e.parent.sqlMessage)
         }
@@ -59,33 +55,33 @@ module.exports = {
 
             if (Array.isArray(req.body)) {
 
-                await req.body.forEach(function(element) {
-                    if (element.LIST_EXPIRE !== null && element.LIST_EXPIRE.trim() === "")
-                        element.LIST_EXPIRE = null;
-
+                let list = req.body.forEach(function(element, idx) {
+                    if (element.expire !== null && element.expire.trim() === "")
+                        element.expire = null;
                     listMaster.update({
-                        LIST_TITLE: element.LIST_TITLE,
-                        LIST_CONTENT: element.LIST_CONTENT,
-                        LIST_EXPIRE: element.LIST_EXPIRE,
-                        LIST_PRIORITY: element.LIST_PRIORITY
+                        title: element.title,
+                        content: element.content,
+                        expire: element.expire,
+                        priority: idx + 1
                     }, {
-                        where: { LIST_ID: element.LIST_ID }
+                        where: { id: element.id }
                     })
+
                 })
-                return true;
+                return list;
             } else {
-                if (req.body.LIST_EXPIRE !== null && req.body.LIST_EXPIRE.trim() === "")
-                    req.body.LIST_EXPIRE = null;
+                if (req.body.expire !== null && req.body.expire.trim() === "")
+                    req.body.expire = null;
 
                 let list = await listMaster.update({
-                    LIST_TITLE: req.body.LIST_TITLE,
-                    LIST_CONTENT: req.body.LIST_CONTENT,
-                    LIST_EXPIRE: req.body.LIST_EXPIRE,
-                    LIST_PRIORITY: req.body.LIST_PRIORITY
+                    title: req.body.title,
+                    content: req.body.content,
+                    expire: req.body.expire,
+                    priority: req.body.priority
                 }, {
-                    where: { LIST_ID: req.body.LIST_ID }
+                    where: { id: req.body.id }
                 })
-                return true;
+                return list;
             }
         } catch (e) {
             logger.error('List 수정시 에러발생 ' + e.parent.code + ' ' + e.parent.sqlMessage)
@@ -95,7 +91,7 @@ module.exports = {
     deleteList: async function(req, res) {
         try {
             let list = await listMaster.destroy({
-                where: { LIST_ID: req.query.LIST_ID }
+                where: { id: req.query.id }
             })
             return list;
         } catch (e) {
@@ -115,10 +111,10 @@ module.exports = {
     //     try {
     //         const Op = Sequelize.Op
     //         let list = await listMaster.findAll({
-    //             attributes: ['LIST_ID', 'LIST_TITLE', 'LIST_CONTENT', 'LIST_CREATED_TIME', 'LIST_EXPIRE', 'LIST_PRIORITY'],
+    //             attributes: ['id', 'title', 'content', 'created_time', 'expire', 'priority'],
     //             where: {
     //                 LIST_COMPLETE: 0,
-    //                 LIST_EXPIRE: {
+    //                 expire: {
     //                     [Op.lt]: moment().format("YYYY-MM-DD")
     //                 }
     //             }
@@ -133,7 +129,7 @@ module.exports = {
     // getCompleteList: async function(req, res) {
     //     try {
     //         let list = await listMaster.findAll({
-    //             attributes: ['LIST_ID', 'LIST_TITLE', 'LIST_CONTENT', 'LIST_CREATED_TIME', 'LIST_EXPIRE', 'LIST_PRIORITY'],
+    //             attributes: ['id', 'title', 'content', 'created_time', 'expire', 'priority'],
     //             where: {
     //                 LIST_COMPLETE: 1
     //             }
@@ -149,7 +145,7 @@ module.exports = {
     //         let list = await listMaster.update({
     //             LIST_COMPLETE: req.body.LIST_COMPLETE
     //         }, {
-    //             where: { LIST_ID: req.body.LIST_ID }
+    //             where: { id: req.body.id }
     //         })
     //         return list
     //     } catch (e) {

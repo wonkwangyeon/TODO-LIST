@@ -1,16 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define('list_master', {
-        LIST_ID: {
+        id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             autoIncrement: true,
             primaryKey: true
         },
-        LIST_TITLE: {
+        title: {
             type: DataTypes.STRING(50),
             allowNull: false,
         },
-        LIST_CONTENT: {
+        content: {
             type: DataTypes.TEXT,
             allowNull: true,
         },
@@ -19,16 +19,16 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: sequelize.literal('0'),
             allowNull: false,
         },
-        LIST_CREATED_TIME: {
+        created_time: {
             type: 'TIMESTAMP',
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
             allowNull: false,
         },
-        LIST_EXPIRE: {
+        expire: {
             type: 'TIMESTAMP',
             allowNull: true,
         },
-        LIST_PRIORITY: {
+        priority: {
             type: 'TIMESTAMP',
             allowNull: true,
         },

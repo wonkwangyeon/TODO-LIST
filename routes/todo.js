@@ -62,9 +62,9 @@ router.delete('/', async function(req, res) {
 // router.post('/priority', async function(req, res) {
 
 //     // await listMaster.create({
-//     //     LIST_TITLE: req.body.list_title,
-//     //     LIST_CONTENT: req.body.list_content,
-//     //     LIST_EXPIRE: req.body.list_expire
+//     //     title: req.body.list_title,
+//     //     content: req.body.list_content,
+//     //     expire: req.body.list_expire
 //     // })
 //     return res.status(200).json({ message: "작성하였습니다." })
 // });
