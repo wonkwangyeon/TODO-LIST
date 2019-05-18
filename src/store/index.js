@@ -11,14 +11,24 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
 
     state: {
-        todoList: []
+        todoList: [],
+        currentTodo: {}
     },
     getters: {
         getTodoList: function(state) {
             return state.todoList;
+        },
+        getCurrentTodo: function(state) {
+            return state.currentTodo;
         }
     },
     mutations: {
+        setCurrentTodo: function(state, payload) {
+            state.currentTodo = payload;
+        },
+        clearTodoList: function(state) {
+            state.todoList = [];
+        },
         addTodoList: function(state, payload) {
             if (Array.isArray(payload)) {
                 payload.forEach(function(element) {
@@ -32,14 +42,14 @@ const store = new Vuex.Store({
             // payload is todo Id
             let todolist = state.todoList;
             state.todoList = todolist.filter(function(element) {
-                return element.LIST_ID !== payload
+                return element.id !== payload
             })
             return
         },
         modifyTodo: function(state, payload) {
             let todolist = state.todoList;
             state.todoList = todolist.map(function(element) {
-                if (element.LIST_ID === payload.LIST_ID) {
+                if (element.id === payload.id) {
                     return payload
                 } else {
                     return element
@@ -51,6 +61,7 @@ const store = new Vuex.Store({
     actions: {
         getAllTodoList: async function(context) {
             try {
+                context.state.todoList = []
                 const { data } = await request.get(constants.api.endpoint);
                 if (data.length > 0) {
                     context.commit('addTodoList', data)
@@ -62,7 +73,7 @@ const store = new Vuex.Store({
         },
         deleteTodo: async function(context, todoId) {
             try {
-                const { status } = await request.delete(constants.api.endpoint, { params: { LIST_ID: todoId } })
+                const { status } = await request.delete(constants.api.endpoint, { params: { id: todoId } })
                 if (status === 200) {
                     context.commit('deleteTodo', todoId)
                 }
@@ -71,7 +82,7 @@ const store = new Vuex.Store({
             }
         },
         setTodo: async function(context, toDo) {
-            // todo = Todo rorcp
+            // todo = Todo 객체
             try {
                 const { status } = await request.post(constants.api.endpoint, toDo);
                 if (status === 200) {
@@ -82,10 +93,22 @@ const store = new Vuex.Store({
             }
         },
         modifyTodo: async function(context, toDo) {
+            // 정렬은 배열로 보내고, 일반 수정 및 완료처리는 json객체 하나로 보냄.
             try {
                 const { status } = await request.put(constants.api.endpoint, toDo);
                 if (status === 200) {
                     return context.commit('modifyTodo', toDo)
+                }
+            } catch (e) {
+                throw new Error("Modify Todo request failed")
+            }
+        },
+        modifyPriority: async function(context) {
+            //
+            try {
+                const { status } = await request.put(constants.api.endpoint, context.state.todoList);
+                if (status === 200) {
+                    return context.commit('modifyTodo')
                 }
             } catch (e) {
                 throw new Error("Modify Todo request failed")

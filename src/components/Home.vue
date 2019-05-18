@@ -16,10 +16,14 @@ export default {
   components: { TodoList },
   async mounted() {
     try {
-      this.$store.dispatch('getAllTodoList')
+      await this.$store.dispatch('getAllTodoList')
     } catch(e) {
       // 요청 실패
-      console.error(e.response.message)
+      this.$bvToast.toast('목록을 불러오던 중 오류가 발생하여 가져올 수 없습니다.', {
+        title: `요청 실패`,
+        variant: 'danger',
+        solid: true
+      })
       //TODO: Modal
     }
   }
