@@ -10,7 +10,7 @@
           ref="inputform"
           size="sm"
           v-model="title"
-          placeholder="New title"
+          placeholder="무슨 할일이 더 있나요?"
           @keydown.native="add_new_todo"
           @blur="add_new_todo"
         />

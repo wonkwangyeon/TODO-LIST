@@ -2,7 +2,7 @@
   <b-container>
     <b-row>
       <b-col md="8">
-        <div>
+        <div class="view_completed_items">
           <b-form-checkbox v-model="view_completed_items">
             완료된 할일 보기
           </b-form-checkbox>
@@ -20,10 +20,10 @@
           </draggable>
           <template v-if="view_completed_items">
             <b-list-group-item
-                    @click="setCurrentTodo(element)"
-                    class="todo_item"
-                    v-for="element in completedTodoList"
-                    :key="`complete-${element.id}`"
+              class="todo_item"
+              @click="setCurrentTodo(element)"
+              v-for="element in completedTodoList"
+              :key="`complete-${element.id}`"
             >
               <todo-item :item="element" />
             </b-list-group-item>
@@ -59,13 +59,37 @@ export default {
   computed: {
     todoList: {
       get: function() {
-        return this.$store.getters.getTodoList.filter(function(todo) {
-          return !todo.complete;
-        });
+        return this.$store.getters.getTodoList
+          .filter(function(todo) {
+            return !todo.complete;
+          })
+          .sort(function(a, b) {
+            if (a.priority > b.priority) return 1;
+            if (a.priority < b.priority) return -1;
+            else return 0;
+          });
       },
-      set: function(value) {
-        console.log(value);
-        //this.$store.
+      set: async function(value) {
+        try {
+          value = value.map(function(element, index) {
+            element.priority = index + 1;
+            return element;
+          });
+          await this.$store.dispatch(
+            "modifyPriority",
+            value.concat(this.completedTodoList)
+          );
+          //서버로 부터 값을 갱신받음
+          // await this.$store.dispatch('getAllTodoList')
+        } catch (e) {
+          this.$bvToast.toast(
+            "요청중 오류가 발생하여 우선순위를 변경할 수 없습니다.",
+            {
+              title: `요청 실패`,
+              variant: "danger"
+            }
+          );
+        }
       }
     },
     completedTodoList: {
@@ -87,24 +111,6 @@ export default {
   methods: {
     setCurrentTodo(todo_element) {
       this.$store.commit("setCurrentTodo", todo_element);
-    },
-    todoModifyComplete(index) {
-      try {
-        this.$store.dispatch("modifyTodo", this.todoList[index]);
-      } catch (e) {
-        // 요청 실패
-        console.error(e.response.message);
-        //TODO: Modal
-      }
-    },
-    todoPriorityModify() {
-      try {
-        this.$store.dispatch("modifyTodo", this.todoList);
-      } catch (e) {
-        // 요청 실패
-        console.error(e.response.message);
-        //TODO: Modal
-      }
     }
   },
   data() {
@@ -123,36 +129,7 @@ export default {
 </script>
 
 <style>
-.check_box {
-  display: inline-block;
-}
 .todo_item {
   cursor: pointer;
-}
-.todo_title {
-  display: inline-block;
-}
-
-.expire_date {
-  display: inline-block;
-  float: right;
-}
-
-.completed_todo_item {
-  text-decoration: line-through;
-  color: #e2e2e2;
-}
-
-.list-body {
-  max-width: 400px;
-  margin: auto;
-}
-
-.btn-visible-size {
-  width: 50px;
-}
-
-.list-btn {
-  margin: 0 10px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="mainbody-size">
-      <h2 class=expire-divide>현재 List</h2>
+      <h2 class=expire-divide>할일 목록</h2>
       <div class="list-container">
         <todo-list />
       </div>

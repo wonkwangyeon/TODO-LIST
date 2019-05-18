@@ -38,6 +38,10 @@ const store = new Vuex.Store({
                 return state.todoList.push(payload);
             }
         },
+        setTodoList: function(state, payload) {
+            //Todo list 를 통째로 교체하기 위한 mutation
+            return state.todoList = payload;
+        },
         deleteTodo: function(state, payload) {
             // payload is todo Id
             let todolist = state.todoList;
@@ -105,12 +109,12 @@ const store = new Vuex.Store({
                 throw new Error("Modify Todo request failed")
             }
         },
-        modifyPriority: async function(context) {
+        modifyPriority: async function(context, newOrder) {
             //
             try {
-                const { status } = await request.put(constants.api.endpoint, context.state.todoList);
+                const { status } = await request.put(constants.api.endpoint, newOrder);
                 if (status === 200) {
-                    return context.commit('modifyTodo')
+                    return context.commit('setTodoList', newOrder)
                 }
             } catch (e) {
                 throw new Error("Modify Todo request failed")
