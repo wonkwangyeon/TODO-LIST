@@ -2,8 +2,8 @@
 ![introduce](../description/introduce.PNG)
 
 ## 1. 소개
-2019 Programmers Summer Coding Internship Todo-List Front-End 입니다.
-개발 환경은 Vue.JS + Vue BootStrap 입니다. 
+2019 Programmers Summer Coding Internship Todo-List Front-End 입니다.  
+개발 환경은 Vue.JS + Vue BootStrap 입니다.  
 배포는 AWS S3 + CloudFront를 활용하였습니다.
 
 ## 2. 설치 및 빌드방법
