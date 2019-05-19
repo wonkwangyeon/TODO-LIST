@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('../lib/schemaVerify')
 const todoService = require('../service/todoService')
-const BadRequestError = require('../error/BadRequestError')
-
-// TODO 조회하는 API
-/**
- * DB에 저장되어있는 TODO를 조회하는 API
- * @return {JSON} 성공시 목록과함께 200코드 반환, 실패시 500코드와 에러메세지 반환.
- */
+const BadRequestError = require('../constants/error/BadRequestError')
+const InvalidRequestError = require('../constants/error/InvalidRequestError')
+    // TODO 조회하는 API
+    /**
+     * DB에 저장되어있는 TODO를 조회하는 API
+     * @return {JSON} 성공시 목록과함께 200코드 반환, 실패시 500코드와 에러메세지 반환.
+     */
 router.get('/', async function(req, res) {
     try {
         let list = await todoService.getList()

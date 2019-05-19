@@ -1,6 +1,6 @@
 const listMaster = require('../models').list_master
 const logger = require('../config/logger')
-const InvalidRequestError = require('../error/InvalidRequestError')
+const InvalidRequestError = require('../constants/error/InvalidRequestError')
 
 module.exports = {
 
@@ -15,8 +15,8 @@ module.exports = {
             return list
         } catch (e) {
 
-            logger.error('현재 List 조회시 에러발생 ' + e.parent.code + ' ' + e.parent.sqlMessage)
-            throw new InvalidRequestError('현재 List 조회시 DB 에러발생')
+            logger.error('Todo 조회시 에러발생 ' + e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('Todo 조회시 서버의 DB에서 에러가발생하였습니다.')
         }
     },
 
@@ -38,8 +38,8 @@ module.exports = {
             return list
         } catch (e) {
 
-            logger.error('List 추가시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
-            throw new InvalidRequestError('List 추가시 DB 에러발생')
+            logger.error('Todo 추가시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('Todo 추가시 서버의 DB에서 에러가발생하였습니다.')
         }
     },
 
@@ -90,8 +90,8 @@ module.exports = {
                 return list;
             }
         } catch (e) {
-            logger.error('List 수정시 에러발생 ' + e.parent.code + ' ' + e.parent.sqlMessage)
-            throw new InvalidRequestError('List 수정시 DB 에러발생')
+            logger.error('Todo 수정시 에러발생 ' + e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('Todo 수정시 서버의 DB에서 에러가발생하였습니다.')
         }
     },
     /**
@@ -107,8 +107,8 @@ module.exports = {
             })
             return list;
         } catch (e) {
-            logger.error('List 삭제시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
-            throw new InvalidRequestError('List 삭제시 DB 에러발생')
+            logger.error('Todo 삭제시 에러발생 ', +e.parent.code + ' ' + e.parent.sqlMessage)
+            throw new InvalidRequestError('Todo 삭제시 서버의 DB에서 에러가발생하였습니다.')
         }
     },
 
