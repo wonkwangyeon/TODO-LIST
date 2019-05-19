@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     todoList: {
-      get: function() {
+      get() {
         return this.$store.getters.getTodoList
           .filter(function(todo) {
             return !todo.complete;
@@ -83,7 +83,7 @@ export default {
           });
       },
       // 순서 조정시 서버에 요청을 한 뒤 Vuex에 반영함
-      set: async function(value) {
+      async set(value) {
         try {
           // 할일 순서를 base로 하여 현재 보이는 순서(array index)대로 우선순위를 재설정함
           value = value.map(function(element, index) {
@@ -107,17 +107,17 @@ export default {
       }
     },
     completedTodoList: {
-      get: function() {
+      get() {
         return this.$store.getters.getTodoList.filter(function(todo) {
           return !!todo.complete; // 서버측으로 부터 true, false가 아닌 1, 0을 수신할 수 있으므로 boolean으로 parse 처리함
         });
       }
     },
     currentTodo: {
-      get: function() {
+      get() {
         return this.$store.getters.getCurrentTodo;
       },
-      set: function(value) {
+      set(value) {
         this.$store.commit("setCurrentTodo", value);
       }
     }

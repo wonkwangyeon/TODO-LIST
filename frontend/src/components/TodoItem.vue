@@ -39,7 +39,7 @@ export default {
     }
   },
   methods: {
-    handleComplete: async function(isChecked) {
+    async handleComplete(isChecked) {
       //체크박스가 선택됐을때 서버에 체크된 할일 정보를 전송하고,
       //리스트에 적용시키기 (vuex)
       try {

@@ -66,12 +66,12 @@ export default {
     };
   },
   watch: {
-    currentTodo: function(val) {
+    currentTodo(val) {
       this.todo_element = JSON.parse(JSON.stringify(val));
     }
   },
   methods: {
-    modify_todo: async function() {
+    async modify_todo() {
       try {
         await this.$store.dispatch("modifyTodo", this.todo_element);
         this.$bvToast.toast("할일이 변경되었습니다", {
@@ -85,7 +85,7 @@ export default {
         });
       }
     },
-    delete_todo: async function() {
+    async delete_todo() {
       try {
         await this.$store.dispatch("deleteTodo", this.currentTodo.id);
         this.$bvToast.toast("할일을 삭제했습니다.", {
