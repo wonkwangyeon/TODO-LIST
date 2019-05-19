@@ -79,7 +79,7 @@ export default {
           variant: "success"
         });
       } catch (e) {
-        this.$bvToast.toast("요청에 실패했습니다", {
+        this.$bvToast.toast(e.message.data.message, {
           title: "요청 실패",
           variant: "danger"
         });
@@ -94,7 +94,7 @@ export default {
           solid: true
         });
       } catch (e) {
-        this.$bvToast.toast("요청을 하였으나 실패하였습니다.", {
+        this.$bvToast.toast(e.message.data.message, {
           title: `요청 실패`,
           variant: "danger",
           solid: true

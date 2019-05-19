@@ -2,6 +2,10 @@ import Vue from "vue";
 import Vuex from "vuex";
 import constants from "../constants";
 import axios from "axios";
+import InvalidRequestError from "../constants/error/InvalidRequestError";
+import RequestTimeOut from "../constants/error/RequestTimeOut";
+import BadRequestError from "../constants/error/BadRequestError";
+
 const request = axios.create({
   baseURL: "http://localhost:3000",
   timeout: 2000
@@ -70,7 +74,11 @@ const store = new Vuex.Store({
           context.commit("addTodoList", data);
         }
       } catch (e) {
-        throw new Error("get To-do reqeust failed");
+        if (typeof e.response === "undefined") {
+          throw new RequestTimeOut({ data: new RequestTimeOut() });
+        } else {
+          throw new InvalidRequestError(e.response);
+        }
       }
     },
     //낱개의 할일을 삭제
@@ -83,7 +91,11 @@ const store = new Vuex.Store({
           context.commit("deleteTodo", todoId);
         }
       } catch (e) {
-        throw new Error("delete To-do request failed");
+        if (typeof e.response === "undefined") {
+          throw new RequestTimeOut({ data: new RequestTimeOut() });
+        } else {
+          throw new InvalidRequestError(e.response);
+        }
       }
     },
     setTodo: async function(context, toDo) {
@@ -94,8 +106,16 @@ const store = new Vuex.Store({
           return context.commit("addTodoList", toDo);
         }
       } catch (e) {
-        throw new Error("Add new Todo request failed");
-    }
+        if (typeof e.response === "undefined") {
+          throw new RequestTimeOut({ data: new RequestTimeOut() });
+        } else {
+          if (e.response.status === 400) {
+            throw new BadRequestError(e.response);
+          } else {
+            throw new InvalidRequestError(e.response);
+          }
+        }
+      }
     },
     modifyTodo: async function(context, toDo) {
       try {
@@ -104,7 +124,15 @@ const store = new Vuex.Store({
           return context.commit("modifyTodo", toDo);
         }
       } catch (e) {
-        throw new Error("Modify Todo request failed");
+        if (typeof e.response === "undefined") {
+          throw new RequestTimeOut({ data: new RequestTimeOut() });
+        } else {
+          if (e.response.status === 400) {
+            throw new BadRequestError(e.response);
+          } else {
+            throw new InvalidRequestError(e.response);
+          }
+        }
       }
     },
     modifyPriority: async function(context, newOrder) {
@@ -115,7 +143,11 @@ const store = new Vuex.Store({
           return context.commit("setTodoList", newOrder);
         }
       } catch (e) {
-        throw new Error("Modify Todo request failed");
+        if (typeof e.response === "undefined") {
+          throw new RequestTimeOut({ data: new RequestTimeOut() });
+        } else {
+          throw new InvalidRequestError(e.response);
+        }
       }
     }
   }

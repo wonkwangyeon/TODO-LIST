@@ -59,7 +59,7 @@ export default {
           variant: "info"
         });
       } catch (e) {
-        this.$bvToast.toast("완료하지 못했습니다.", {
+        this.$bvToast.toast(e.message.data.message, {
           title: `요청 실패`,
           variant: "danger"
         });

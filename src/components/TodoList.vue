@@ -97,7 +97,7 @@ export default {
           );
         } catch (e) {
           this.$bvToast.toast(
-            "요청중 오류가 발생하여 우선순위를 변경할 수 없습니다.",
+                  e.message.data.message,
             {
               title: `요청 실패`,
               variant: "danger"
