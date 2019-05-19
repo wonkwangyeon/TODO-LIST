@@ -40,7 +40,7 @@ export default {
     };
   },
   methods: {
-    request_new_todo: async function() {
+    async request_new_todo() {
       const title = this.title;
       this.title = "";
       try {
@@ -62,7 +62,7 @@ export default {
         });
       }
     },
-    add_new_todo: async function(event) {
+    async add_new_todo(event) {
       if (event.which === 13) {
         // 엔터키 입력시 저장 또는 작성취소
         if (this.title.length === 0) {
@@ -77,7 +77,7 @@ export default {
         await this.request_new_todo();
       } else return;
     },
-    activateForm: function() {
+    activateForm() {
       this.isEditable = true;
       this.$nextTick(function() {
         this.$refs.inputform.$el.focus();
