@@ -19,14 +19,11 @@ export default {
       await this.$store.dispatch("getAllTodoList");
     } catch (e) {
       // 요청 실패
-      this.$bvToast.toast(
-        "목록을 불러오던 중 오류가 발생하여 가져올 수 없습니다.",
-        {
-          title: `요청 실패`,
-          variant: "danger",
-          solid: true
-        }
-      );
+      this.$bvToast.toast(e.message.data.message, {
+        title: `요청 실패`,
+        variant: "danger",
+        solid: true
+      });
     }
   }
 };

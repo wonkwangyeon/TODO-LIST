@@ -45,8 +45,7 @@ export default {
       this.title = "";
       try {
         await this.$store.dispatch("setTodo", {
-          title: title,
-          priority: this.$store.getters.getTodoList.length
+          title: title
         });
         this.$bvToast.toast("새로운 항목이 추가되었습니다", {
           title: `요청 성공`,
@@ -55,7 +54,8 @@ export default {
         });
         await this.$store.dispatch("getAllTodoList");
       } catch (e) {
-        this.$bvToast.toast("요청에 실패했습니다.", {
+
+        this.$bvToast.toast(e.message.data.message, {
           title: "요청 실패",
           variant: "danger",
           solid: true
