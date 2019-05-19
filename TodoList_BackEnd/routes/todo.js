@@ -31,7 +31,7 @@ router.post('/', async function(req, res) {
 
         let result = Joi.verifySetTodo(req)
         if (result.error !== null) {
-            throw new BadRequestError('작업은 50자 이하로 입력해주세요')
+            throw new BadRequestError('작업은 적어도 1~50자 사이로 입력해주세요')
         }
         let list = await todoService.setList(req)
         let msg = {
@@ -71,7 +71,6 @@ router.put('/', async function(req, res) {
         }
         return res.status(200).json(msg)
     } catch (e) {
-        console.log(e)
         return res.status(e.code).json(e)
     }
 
