@@ -16,8 +16,8 @@ const modifyTodo = {
     priority: Joi.number().integer(),
     title: Joi.string().max(50),
     complete: Joi.number().integer().min(0).max(1),
-    expire: Joi.date().format('YYYY-MM-DD'),
-    content: Joi.string()
+    expire: Joi.date().format('YYYY-MM-DD').allow('', null),
+    content: Joi.string().allow('', null)
 }
 
 // id - Integer
@@ -49,20 +49,9 @@ module.exports = {
         let result = Joi.validate({ title: req.body.title }, setTodo);
         if (result.error !== null) {
 
-            throw new BadRequestError('작업은 50자 이하로 입력해주세요')
+            throw new BadRequestError('작업은 적어도 1~50자 사이로 입력해주세요')
         } else {
-            if (req.body.expire === null || req.body.expire === '')
-                return Joi.validate({
-                    id: req.body.id,
-                    created_time: req.body.created_time,
-                    priority: req.body.priority,
-                    title: req.body.title,
-                    complete: req.body.complete,
-                    content: req.body.content
-                }, modifyTodo);
-            else {
-                return Joi.validate(req.body, modifyTodo);
-            }
+            return Joi.validate(req.body, modifyTodo);
         }
     },
     /**
