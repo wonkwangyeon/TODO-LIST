@@ -9,7 +9,7 @@ sequelize.sync();
 const PORT = process.env.PORT
 let corsURI = "http://localhost:9000"
 if (process.env.NODE_ENV === "production") {
-    corsURI = "http://2019-programmers-todo.wky.kr"
+    corsURI = ["http://2019-programmers-todo.wky.kr", "https://2019-programmers-todo.wky.kr" ]
 }
 // Front-End에서의 접근을 위해Cross Origin Resource Sharing 허용
 app.use(cors({
